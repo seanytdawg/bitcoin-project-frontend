@@ -7,11 +7,19 @@
   pointer-events: none;
 }
 
+.home{
+  /* background: #61dafb; */
+  background-size: cover;
+
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
 }
+
+
 
 .App-header {
   background-color: #282c34;
