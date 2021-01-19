@@ -7,6 +7,14 @@ import Coin from './assets/bitcoin-coin.png'
 import ArticleCard  from './ArticleCard'
 import Item from './Item.js'
 
+// import {}'./.env'
+// require("dotenv").config();
+
+// const webpack = require("webpack");
+const dotenv = require("dotenv");
+
+const env = dotenv.config().parsed
+
 class Home extends Component {
 
 
@@ -32,7 +40,7 @@ class Home extends Component {
         });
     }
     componentDidMount = ()=>{
-        console.log("window width: ", window.innerWidth)
+        console.log("environment ", process.env.REACT_APP_ARTICLE_API_KEY);
         if(window.innerWidth <= 760){
             this.setState({mobile: true})
             // console.log("mobile")

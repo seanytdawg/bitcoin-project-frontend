@@ -20,10 +20,12 @@ export const getBitCoinPrice = (currency)=>fetch(`${BACKEND}price`, {
     return response.json()
 })
 
-export const getBitCoinArticles = ()=>fetch(`http://newsapi.org/v2/everything?q=bitcoin&from=${fullYear}-${month}-${day}sortBy=publishedAt&apiKey=49e5b779307a46218a80ff611b755bf4`)
-    .then((response)=>{
-   return response.json()
-    })
+export const getBitCoinArticles = () =>
+  fetch(
+    `http://newsapi.org/v2/everything?q=bitcoin&from=${fullYear}-${month}-${day}sortBy=publishedAt&apiKey=${process.env.REACT_APP_ARTICLE_API_KEY}`
+  ).then((response) => {
+    return response.json();
+  });
 
     export const getAmazonProducts = () =>
       fetch(`${BACKEND}items`)
