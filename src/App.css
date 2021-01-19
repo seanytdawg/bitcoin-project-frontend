@@ -1,5 +1,11 @@
 .App {
   text-align: center;
+  justify-items: center;
+  justify-content: center;
+}
+
+*{
+  justify-items: center;
 }
 
 .App-logo {
@@ -8,16 +14,12 @@
 }
 
 .home{
-  /* background: #61dafb; */
   background-size: cover;
+  justify-items: center;
+  color: white;
 
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
 
 
 
@@ -28,6 +30,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  justify-items: center;
   font-size: calc(10px + 2vmin);
   color: white;
 }
@@ -36,11 +39,80 @@
   color: #61dafb;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.currency-picker{
+  font-size: large;
+  padding: 10;
+  width: 200px;
+  color: black;
+}
+
+.picker-container{
+  text-align: center;
+  margin: auto;
+  /* position: absolute;
+  left: 470px;
+  top: 150px; */
+}
+.bitcoin-info{
+  position: relative;
+  /* top: 240px;
+  left: 400px; */
+  align-items: center;
+}
+.coin{
+  /* position: absolute;
+  top: 170px;
+  left: 370px; */
+}
+.article-card{
+  box-shadow: #242c3c;
+  background-color: rgb(57, 60, 63);
+  text-decoration: none;
+  margin: 5px;
+  padding: 5%;
+}
+.article-card :hover{
+  background-color:  rgb(24, 72, 119);
+}
+.article-card a{
+  text-decoration: none;
+  color: white;
+}
+
+.article-img{
+  height: 40%;
+  width: 40%;
+  max-width: 100%;
+  
+}
+.article-title{
+  size: 20px;
+  position: relative;
+}
+.article-container{
+  margin: auto;
+  width: 150%;
+  display: grid;
+ 
+  justify-items: center;
+   padding-top: 20px;
+   grid-template-columns: repeat(auto-fill, 350px);
+    grid-auto-rows: auto;
+}
+.coin-img{
+  height: 230px;
+  width: 230px;
+  animation: spin 3s linear 0s forwards;
+}
+@keyframes spin {
+  from {transform: rotateY(0deg)}
+  to {transform: rotateY(360deg) }
+}
+
+@media screen and (max-width: 960px){
+
+  .article-card{
+    /* background-color: blue; */
   }
-  to {
-    transform: rotate(360deg);
-  }
+
 }
