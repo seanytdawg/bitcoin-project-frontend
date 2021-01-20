@@ -1,12 +1,7 @@
+import {fullYear, day, month} from '../date.js'
+
+
 const BACKEND = "http://localhost:5000/";
-
-let date = new Date();
-
-let fullYear = date.getFullYear()
-
-let day = date.getDate()
-
-let month = date.getMonth()
 
 
 
@@ -27,10 +22,17 @@ export const getBitCoinArticles = () =>
     return response.json();
   });
 
-    export const getAmazonProducts = () =>
-      fetch(`${BACKEND}items`)
-      .then((response) => {
-        //   console.log("amazon response: ", response)
-          return response.json();
-      });
+
+export const getAmazonProducts = () =>
+    fetch(`${BACKEND}items`)
+    .then((response) => {
+    //   console.log("amazon response: ", response)
+        return response.json();
+ });
+
+ export const getBitcoinStockChartData = () =>
+   fetch("https://api.coindesk.com/v1/bpi/historical/close.json")
+   .then((response)=>{
+       return response.json()
+   })
     // .then((articles)=> articles.articles)

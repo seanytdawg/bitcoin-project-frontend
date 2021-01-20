@@ -1,7 +1,6 @@
 import React from 'react';
 
 function Item(props) {
-    console.log("item props: ",props)
     return (
       <div>
           
