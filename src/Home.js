@@ -37,7 +37,8 @@ class Home extends Component {
     mobile: false,
     amazonProducts: [],
     sortedData: [],
-    fetchingData: true
+    fetchingData: true, 
+    priceNow: null
   };
 
   handleChartHover(hoverLoc, activePoint) {
@@ -57,12 +58,12 @@ class Home extends Component {
       flippingCoin: true,
     });
     getBitCoinPrice(this.state.currencyChosen).then((priceData) => {
-      this.setState({ priceData: priceData.priceData, flippingCoin: false });
+      this.setState({ priceData: priceData.priceData, flippingCoin: false, priceNow: priceData.priceValue });
     });
   };
   componentDidMount = () => {
     let sortedData = [];
-
+    console.log("price now", this.state.priceNow)
     getBitcoinStockChartData()
       .then((bitcoinData) => {
         let count = 0;
@@ -84,15 +85,19 @@ class Home extends Component {
     // console.log("environment ", process.env.REACT_APP_ARTICLE_API_KEY);
     if (window.innerWidth <= 760) {
       this.setState({ mobile: true });
-      // console.log("mobile")
     }
 
     // console.log(Currencies)
     getBitCoinPrice("US Dollars").then((priceData) => {
-      this.setState({ priceData: priceData.priceData, flippingCoin: false });
+      this.setState({
+        priceData: priceData.priceData,
+        flippingCoin: false,
+        priceNow: priceData.priceValue,
+      });
     });
     if (this.state.articles.length == 0) {
       getBitCoinArticles().then((articles) => {
+        // articles.slice(10)
         this.setState({ articles: articles.articles });
       });
     }
@@ -108,12 +113,14 @@ class Home extends Component {
   };
 
   render() {
+
     let articleList = this.state.articles.map((article, index) => {
       return <ArticleCard key={index} {...article} />;
     });
     return (
       <div className="home">
         <h1>What is Bitcoin's Price?</h1>
+        <h2>The one million dollar question</h2>
         Currency: {this.state.currencyDisplayed}
         <div className="picker-container">
           <Select
@@ -126,12 +133,13 @@ class Home extends Component {
         {!this.state.flippingCoin ? (
           <div className="bitcoin-info">
             <button onClick={this.handleSubmit}>Convert to Coin!</button>
+            <p className="stock-price">{this.state.priceNow}</p>
             <p>{this.state.priceData}</p>
           </div>
         ) : (
-          <div className="coin">
-            <img className="coin-img" src={Coin} />
-          </div>
+          // <div className="coin">
+          <img className="coin-img" src={Coin} />
+          // </div>
         )}
         <div className="container">
           <div className="row">
@@ -169,8 +177,15 @@ class Home extends Component {
             </div>
           </div>
         </div>
+        <br>
+        </br>
+        {this.state.itemOfTheDay ? (
+          <Item
+            {...this.state.itemOfTheDay}
+            currentPrice={this.state.priceNow}
+          />
+        ) : null}
         <div className="article-container">Articles: {articleList}</div>
-        {this.state.itemOfTheDay ? <Item {...this.state.itemOfTheDay} /> : null}
       </div>
     );
   }
