@@ -104,6 +104,15 @@ class Home extends Component {
 
     if (this.state.itemOfTheDay === null) {
       getAmazonProducts().then((amazonProducts) => {
+        let currentItemPrice = amazonProducts[day]['price']
+            let currentItemPriceNum = parseInt(currentItemPrice);
+        while(typeof(currentItemPriceNum) != 'number') {
+          console.log("amazon product: ", currentItemPrice);
+          day++
+          currentItemPrice = amazonProducts[day]["price"];
+          currentItemPriceNum = parseInt(currentItemPrice);
+        }
+
         this.setState({ itemOfTheDay: amazonProducts[day] });
         // console.log("amazon: ",amazonProducts)
       });
@@ -121,18 +130,21 @@ class Home extends Component {
       <div className="home">
         <h1>What is Bitcoin's Price?</h1>
         <h2>The one million dollar question</h2>
-        Currency: {this.state.currencyDisplayed}
-        <div className="picker-container">
+
+        {!this.state.flippingCoin ? (
+          <div className="picker-container">
+          Currency: {this.state.currencyDisplayed}
           <Select
             className="currency-picker"
             options={Currencies}
             onChange={this.handleSelect}
             placeholder="US Dollar"
           />
-        </div>
+        </div>)
+        :null}
         {!this.state.flippingCoin ? (
           <div className="bitcoin-info">
-            <button onClick={this.handleSubmit}>Convert to Coin!</button>
+            <button id = "button-converter" onClick={this.handleSubmit}>Convert to Coin!</button>
             <p className="stock-price">{this.state.priceNow}</p>
             <p>{this.state.priceData}</p>
           </div>
@@ -177,15 +189,16 @@ class Home extends Component {
             </div>
           </div>
         </div>
-        <br>
-        </br>
+        <br></br>
         {this.state.itemOfTheDay ? (
           <Item
             {...this.state.itemOfTheDay}
             currentPrice={this.state.priceNow}
           />
         ) : null}
-        <div className="article-container">Articles: {articleList}</div>
+        <div className="article-container">
+          <h2>Articles:</h2> {articleList}
+        </div>
       </div>
     );
   }
