@@ -18,10 +18,6 @@ import InfoBox from './InfoBox'
 import ToolTip from './ToolTip'
 
 
-// import {}'./.env'
-// require("dotenv").config();
-
-// const webpack = require("webpack");
 const dotenv = require("dotenv");
 
 const env = dotenv.config().parsed
@@ -57,9 +53,7 @@ class Home extends Component {
       currencyDisplayed: this.state.currencyChosen,
       flippingCoin: true,
     });
-    getBitCoinPrice(this.state.currencyChosen).then((priceData) => {
-      this.setState({ priceData: priceData.priceData, flippingCoin: false, priceNow: priceData.priceValue });
-    });
+    getBitCoinPrice();
   };
   componentDidMount = () => {
     let sortedData = [];
@@ -88,13 +82,7 @@ class Home extends Component {
     }
 
     // console.log(Currencies)
-    getBitCoinPrice("US Dollars").then((priceData) => {
-      this.setState({
-        priceData: priceData.priceData,
-        flippingCoin: false,
-        priceNow: priceData.priceValue,
-      });
-    });
+    getBitCoinPrice();
     if (this.state.articles.length == 0) {
       getBitCoinArticles().then((articles) => {
         // articles.slice(10)
@@ -102,23 +90,20 @@ class Home extends Component {
       });
     }
 
-    if (this.state.itemOfTheDay === null) {
-      getAmazonProducts().then((amazonProducts) => {
-        let currentItemPrice = amazonProducts[day]['price']
-            let currentItemPriceNum = parseInt(currentItemPrice);
-        while(typeof(currentItemPriceNum) != 'number') {
-          console.log("amazon product: ", currentItemPrice);
-          day++
-          currentItemPrice = amazonProducts[day]["price"];
-          currentItemPriceNum = parseInt(currentItemPrice);
-        }
+    // if (this.state.itemOfTheDay === null) {
+    //   getAmazonProducts().then((amazonProducts) => {
+    //     let currentItemPrice = amazonProducts[day]['price']
+    //         let currentItemPriceNum = parseInt(currentItemPrice);
+    //     while(typeof(currentItemPriceNum) != 'number') {
+    //       console.log("amazon product: ", currentItemPrice);
+    //       day++
+    //       currentItemPrice = amazonProducts[day]["price"];
+    //       currentItemPriceNum = parseInt(currentItemPrice);
+    //     }
+    //     this.setState({ itemOfTheDay: amazonProducts[day] });
+    //   });
 
-        this.setState({ itemOfTheDay: amazonProducts[day] });
-        // console.log("amazon: ",amazonProducts)
-      });
-      //     getAmazonProducts().then((amazonProducts) =>{
-      // this.setState({ amazonProducts: amazonProducts.amazonProducts });
-    }
+    // }
   };
 
   render() {

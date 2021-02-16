@@ -1,19 +1,14 @@
 import {fullYear, day, month} from '../date.js'
 
-// const BACKEND = "https://hidden-ocean-15631.herokuapp.com/";
-const BACKEND = "http://localhost:3000/"
 
 
-
-export const getBitCoinPrice = (currency)=>fetch(`${BACKEND}price`, {
-    headers: {
-        currency: currency
-    }
-})
-.then((response)=>{
-    console.log("returned with a status of", response.status)
-    return response.json();
-})
+export const getBitCoinPrice = () =>
+  console.log("api key: ", process.env.REACT_APP_NOMICS_API_KEY);
+  fetch(
+    `https://api.nomics.com/v1/exchange-rates?key=${process.env.REACT_APP_NOMICS_API_KEY}`
+  )
+    .then((response) => response.json())
+    .then((data) => console.log("api data: ", data));
 
 export const getBitCoinArticles = () =>
   fetch(
@@ -21,14 +16,6 @@ export const getBitCoinArticles = () =>
   ).then((response) => {
     return response.json();
   });
-
-
-export const getAmazonProducts = () =>
-    fetch(`${BACKEND}items`)
-    .then((response) => {
-    //   console.log("amazon response: ", response)
-        return response.json();
- });
 
  export const getBitcoinStockChartData = () =>
    fetch("https://api.coindesk.com/v1/bpi/historical/close.json")
