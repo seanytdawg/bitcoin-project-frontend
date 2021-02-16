@@ -1,6 +1,6 @@
 import {fullYear, day, month} from '../date.js'
 
-
+// const BACKEND = "https://hidden-ocean-15631.herokuapp.com/";
 const BACKEND = "http://localhost:3000/"
 
 
@@ -12,7 +12,7 @@ export const getBitCoinPrice = (currency)=>fetch(`${BACKEND}price`, {
 })
 .then((response)=>{
     console.log("returned with a status of", response.status)
-    return response.json()
+    return response.json();
 })
 
 export const getBitCoinArticles = () =>
