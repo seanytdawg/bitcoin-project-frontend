@@ -26,7 +26,7 @@ class Home extends Component {
   state = {
     itemOfTheDay: null,
     priceData: null,
-    currencyChosen: "US Dollars",
+    currencyChosen: "USD",
     currencyDisplayed: "US Dollars",
     flippingCoin: true,
     articles: [],
@@ -46,6 +46,8 @@ class Home extends Component {
 
   handleSelect = (e) => {
     this.setState({ currencyChosen: e.value });
+
+
   };
 
   handleSubmit = () => {
@@ -53,11 +55,30 @@ class Home extends Component {
       currencyDisplayed: this.state.currencyChosen,
       flippingCoin: true,
     });
-    getBitCoinPrice();
+    getBitCoinPrice()
+    .then((currencies)=>{ 
+  console.log(currencies)
+      let bitcoinInUSD = null
+      let currentCurrencyToUSD = null
+      currencies.forEach((currency)=>{
+        if(currency.currency === 'BTC'){
+          console.log("bingo")
+          bitcoinInUSD = currency.rate
+          parseFloat(bitcoinInUSD)
+        }
+        if(currency.currency === this.state.currencyChosen){
+            console.log("bingo");
+          currentCurrencyToUSD = currency.rate
+          parseFloat(currentCurrencyToUSD);
+        }
+      })
+      console.log(bitcoinInUSD, currentCurrencyToUSD)
+      let currentPrice = (bitcoinInUSD/currentCurrencyToUSD)
+      this.setState({priceNow: currentPrice})
+    })
   };
   componentDidMount = () => {
     let sortedData = [];
-    console.log("price now", this.state.priceNow)
     getBitcoinStockChartData()
       .then((bitcoinData) => {
         let count = 0;
@@ -85,25 +106,9 @@ class Home extends Component {
     getBitCoinPrice();
     if (this.state.articles.length == 0) {
       getBitCoinArticles().then((articles) => {
-        // articles.slice(10)
         this.setState({ articles: articles.articles });
       });
     }
-
-    // if (this.state.itemOfTheDay === null) {
-    //   getAmazonProducts().then((amazonProducts) => {
-    //     let currentItemPrice = amazonProducts[day]['price']
-    //         let currentItemPriceNum = parseInt(currentItemPrice);
-    //     while(typeof(currentItemPriceNum) != 'number') {
-    //       console.log("amazon product: ", currentItemPrice);
-    //       day++
-    //       currentItemPrice = amazonProducts[day]["price"];
-    //       currentItemPriceNum = parseInt(currentItemPrice);
-    //     }
-    //     this.setState({ itemOfTheDay: amazonProducts[day] });
-    //   });
-
-    // }
   };
 
   render() {
@@ -116,7 +121,7 @@ class Home extends Component {
         <h1>What is Bitcoin's Price?</h1>
         <h2>The one million dollar question</h2>
 
-        {!this.state.flippingCoin ? (
+        {this.state.flippingCoin ? (
           <div className="picker-container">
           Currency: {this.state.currencyDisplayed}
           <Select
@@ -127,7 +132,7 @@ class Home extends Component {
           />
         </div>)
         :null}
-        {!this.state.flippingCoin ? (
+        {this.state.flippingCoin ? (
           <div className="bitcoin-info">
             <button id = "button-converter" onClick={this.handleSubmit}>Convert to Coin!</button>
             <p className="stock-price">{this.state.priceNow}</p>

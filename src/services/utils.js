@@ -3,18 +3,17 @@ import {fullYear, day, month} from '../date.js'
 
 
 export const getBitCoinPrice = () =>
-  console.log("api key: ", process.env.REACT_APP_NOMICS_API_KEY);
   fetch(
     `https://api.nomics.com/v1/exchange-rates?key=${process.env.REACT_APP_NOMICS_API_KEY}`
   )
-    .then((response) => response.json())
-    .then((data) => console.log("api data: ", data));
+    .then((response) => 
+       response.json())
 
 export const getBitCoinArticles = () =>
   fetch(
     `http://newsapi.org/v2/everything?q=bitcoin&from=${fullYear}-${month}-${day}sortBy=publishedAt&apiKey=${process.env.REACT_APP_ARTICLE_API_KEY}`
   ).then((response) => {
-    return response.json();
+    return response.json()
   });
 
  export const getBitcoinStockChartData = () =>
@@ -22,4 +21,3 @@ export const getBitCoinArticles = () =>
    .then((response)=>{
        return response.json()
    })
-    // .then((articles)=> articles.articles)
