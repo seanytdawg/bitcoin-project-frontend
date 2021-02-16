@@ -24,10 +24,11 @@ const env = dotenv.config().parsed
 
 class Home extends Component {
   state = {
-    itemOfTheDay: null,
+    itemOfTheDay: true,
     priceData: null,
     currencyChosen: "USD",
     currencyDisplayed: "US Dollars",
+    currencySymbol: "$",
     flippingCoin: true,
     articles: [],
     mobile: false,
@@ -55,29 +56,31 @@ class Home extends Component {
       currencyDisplayed: this.state.currencyChosen,
       flippingCoin: true,
     });
-    getBitCoinPrice()
-    .then((currencies)=>{ 
-  console.log(currencies)
-      let bitcoinInUSD = null
-      let currentCurrencyToUSD = null
-      currencies.forEach((currency)=>{
-        if(currency.currency === 'BTC'){
-          console.log("bingo")
-          bitcoinInUSD = currency.rate
-          parseFloat(bitcoinInUSD)
+    this.getBitCoinPriceByCurrentCurrency()
+  }
+
+
+  getBitCoinPriceByCurrentCurrency = ()=>{
+    getBitCoinPrice().then((currencies) => {
+      let bitcoinInUSD = null;
+      let currentCurrencyToUSD = null;
+      currencies.forEach((currency) => {
+        if (currency.currency === "BTC") {
+          bitcoinInUSD = currency.rate;
+          parseFloat(bitcoinInUSD);
         }
-        if(currency.currency === this.state.currencyChosen){
-            console.log("bingo");
-          currentCurrencyToUSD = currency.rate
+        if (currency.currency === this.state.currencyChosen) {
+          this.setState({ currencySymbol: currency.symbol });
+          currentCurrencyToUSD = currency.rate;
           parseFloat(currentCurrencyToUSD);
         }
-      })
-      console.log(bitcoinInUSD, currentCurrencyToUSD)
-      let currentPrice = (bitcoinInUSD/currentCurrencyToUSD)
-      this.setState({priceNow: currentPrice})
-    })
-  };
+      });
+      let currentPrice = (bitcoinInUSD / currentCurrencyToUSD).toFixed(2);
+      this.setState({ priceNow: currentPrice });
+    });
+  }
   componentDidMount = () => {
+    this.getBitCoinPriceByCurrentCurrency()
     let sortedData = [];
     getBitcoinStockChartData()
       .then((bitcoinData) => {
@@ -102,8 +105,7 @@ class Home extends Component {
       this.setState({ mobile: true });
     }
 
-    // console.log(Currencies)
-    getBitCoinPrice();
+    getBitCoinPrice()
     if (this.state.articles.length == 0) {
       getBitCoinArticles().then((articles) => {
         this.setState({ articles: articles.articles });
@@ -123,20 +125,23 @@ class Home extends Component {
 
         {this.state.flippingCoin ? (
           <div className="picker-container">
-          Currency: {this.state.currencyDisplayed}
-          <Select
-            className="currency-picker"
-            options={Currencies}
-            onChange={this.handleSelect}
-            placeholder="US Dollar"
-          />
-        </div>)
-        :null}
+            Currency: {this.state.currencyDisplayed}
+            <Select
+              className="currency-picker"
+              options={Currencies}
+              onChange={this.handleSelect}
+              placeholder="US Dollar"
+            />
+          </div>
+        ) : null}
         {this.state.flippingCoin ? (
           <div className="bitcoin-info">
-            <button id = "button-converter" onClick={this.handleSubmit}>Convert to Coin!</button>
+            <button id="button-converter" onClick={this.handleSubmit}>
+              Convert to Coin!
+            </button>
             <p className="stock-price">{this.state.priceNow}</p>
-            <p>{this.state.priceData}</p>
+            <p className = "stock-price-symbol">{this.state.currencySymbol}</p>
+            <p>One bitcoin is worth {this.state.priceNow} {this.state.currencyChosen}s</p>
           </div>
         ) : (
           // <div className="coin">

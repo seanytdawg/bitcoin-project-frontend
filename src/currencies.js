@@ -1065,7 +1065,7 @@ let currencies = [
 
 currencies = currencies.map((currency)=>{
 
- return { value: currency.code, code: currency.code, label: currency.name}
+ return { value: currency.code, code: currency.code, label: currency.name, symbol: currency.symbol}
 
 }
 )

@@ -8,6 +8,9 @@ export const getBitCoinPrice = () =>
   )
     .then((response) => 
        response.json())
+       .catch((error)=>{
+         console.log("error in getting btc price: ", error)
+       })
 
 export const getBitCoinArticles = () =>
   fetch(
@@ -21,3 +24,29 @@ export const getBitCoinArticles = () =>
    .then((response)=>{
        return response.json()
    })
+
+   export const getAmazonProducts = ()=>{
+
+    fetch(
+      `https://amazon-price.p.rapidapi.com/azapi-azSearch` +
+        new URLSearchParams({
+          prime: "false",
+          query: "affiliate marketing",
+          page: "1",
+        }),
+
+      {
+        method: "GET",
+        mode: "cors",
+        headers: {
+          // credentials: "include",
+          "Access-Control-Allow-Origin": "*",
+          "x-rapidapi-key": process.env["x-rapidapi-key"],
+          "x-rapidapi-host": "amazon-price.p.rapidapi.com",
+          useQueryString: true,
+        },
+      }
+    ).then((response) => {
+      console.log("amazon response", response);
+    });
+   }
