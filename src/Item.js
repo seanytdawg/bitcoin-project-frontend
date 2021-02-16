@@ -8,7 +8,7 @@ function Item(props) {
 
     const howManyItemsCanYouBuy = ()=>{
         // getBitCoinPrice('us dollars')
-        getAmazonProducts()
+        // getAmazonProducts()
         
         // .then((priceData)=>{
         //     let numBitCoin = parseFloat(priceData.priceValue)

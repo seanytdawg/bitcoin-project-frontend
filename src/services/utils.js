@@ -4,19 +4,20 @@ import {fullYear, day, month} from '../date.js'
 
 export const getBitCoinPrice = () =>
   fetch(
-    `https://api.nomics.com/v1/exchange-rates?key=${process.env.REACT_APP_NOMICS_API_KEY}`
+    `https://api.nomics.com/v1/exchange-rates?key=${process.env.REACT_APP_NOMICS_API_KEY}`, {
+    }
   )
     .then((response) => 
        response.json())
-       .catch((error)=>{
-         console.log("error in getting btc price: ", error)
-       })
 
 export const getBitCoinArticles = () =>
   fetch(
-    `http://newsapi.org/v2/everything?q=bitcoin&from=${fullYear}-${month}-${day}sortBy=publishedAt&apiKey=${process.env.REACT_APP_ARTICLE_API_KEY}`
+    `http://newsapi.org/v2/everything?q=bitcoin&from=${fullYear}-${month}-${day}sortBy=publishedAt&apiKey=${process.env.REACT_APP_ARTICLE_API_KEY}`,
+    {
+      headers: { "Access-Control-Allow-Origin": "*" },
+    }
   ).then((response) => {
-    return response.json()
+    return response.json();
   });
 
  export const getBitcoinStockChartData = () =>
@@ -25,28 +26,28 @@ export const getBitCoinArticles = () =>
        return response.json()
    })
 
-   export const getAmazonProducts = ()=>{
+  //  export const getAmazonProducts = ()=>{
 
-    fetch(
-      `https://amazon-price.p.rapidapi.com/azapi-azSearch` +
-        new URLSearchParams({
-          prime: "false",
-          query: "affiliate marketing",
-          page: "1",
-        }),
+  //   fetch(
+  //     `https://amazon-price.p.rapidapi.com/azapi-azSearch` +
+  //       new URLSearchParams({
+  //         prime: "false",
+  //         query: "affiliate marketing",
+  //         page: "1",
+  //       }),
 
-      {
-        method: "GET",
-        mode: "cors",
-        headers: {
-          // credentials: "include",
-          "Access-Control-Allow-Origin": "*",
-          "x-rapidapi-key": process.env["x-rapidapi-key"],
-          "x-rapidapi-host": "amazon-price.p.rapidapi.com",
-          useQueryString: true,
-        },
-      }
-    ).then((response) => {
-      console.log("amazon response", response);
-    });
-   }
+  //     {
+  //       method: "GET",
+  //       mode: "cors",
+  //       headers: {
+  //         // credentials: "include",
+  //         "Access-Control-Allow-Origin": "*",
+  //         "x-rapidapi-key": process.env["x-rapidapi-key"],
+  //         "x-rapidapi-host": "amazon-price.p.rapidapi.com",
+  //         useQueryString: true,
+  //       },
+  //     }
+  //   ).then((response) => {
+  //     console.log("amazon response", response);
+  //   });
+  //  }

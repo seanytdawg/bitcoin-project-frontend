@@ -24,7 +24,7 @@ const env = dotenv.config().parsed
 
 class Home extends Component {
   state = {
-    itemOfTheDay: true,
+    itemOfTheDay: null,
     priceData: null,
     currencyChosen: "USD",
     currencyDisplayed: "US Dollars",
