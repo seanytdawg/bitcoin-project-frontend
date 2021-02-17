@@ -3,8 +3,10 @@ import moment from 'moment'
 import {
   getBitCoinPrice,
   getBitCoinArticles,
+  getBitCoinPrice2,
   getAmazonProducts,
   getBitcoinStockChartData,
+  getHousingData,
 } from "./services/utils";
 import { day } from "./date.js";
 import Select from "react-select";
@@ -24,6 +26,7 @@ const env = dotenv.config().parsed
 
 class Home extends Component {
   state = {
+    bitcoinInUSD: null,
     itemOfTheDay: null,
     priceData: null,
     currencyChosen: "USD",
@@ -52,6 +55,10 @@ class Home extends Component {
   };
 
   handleSubmit = () => {
+    getHousingData()
+    .then((housingData)=>{
+      console.log("housing data: ", housingData)
+    })
     this.setState({
       currencyDisplayed: this.state.currencyChosen,
       flippingCoin: true,
@@ -59,23 +66,23 @@ class Home extends Component {
     this.getBitCoinPriceByCurrentCurrency()
   }
 
-
   getBitCoinPriceByCurrentCurrency = ()=>{
+    getBitCoinPrice2()
+    .then((cryptos)=>{
+     let liveBitcoinData= cryptos.find((crypto)=>crypto.id === "BTC")
+      let bitcoinInUSD = parseInt(liveBitcoinData.price);
+     this.setState({bitcoinInUSD})
+    })
     getBitCoinPrice().then((currencies) => {
-      let bitcoinInUSD = null;
       let currentCurrencyToUSD = null;
       currencies.forEach((currency) => {
-        if (currency.currency === "BTC") {
-          bitcoinInUSD = currency.rate;
-          parseFloat(bitcoinInUSD);
-        }
         if (currency.currency === this.state.currencyChosen) {
           this.setState({ currencySymbol: currency.symbol });
           currentCurrencyToUSD = currency.rate;
           parseFloat(currentCurrencyToUSD);
         }
       });
-      let currentPrice = (bitcoinInUSD / currentCurrencyToUSD).toFixed(2);
+      let currentPrice = (this.state.bitcoinInUSD / currentCurrencyToUSD).toFixed(2);
       this.setState({ priceNow: currentPrice });
     });
   }
@@ -83,7 +90,7 @@ class Home extends Component {
     this.getBitCoinPriceByCurrentCurrency()
     let sortedData = [];
     getBitcoinStockChartData()
-      .then((bitcoinData) => {
+    .then((bitcoinData) => {
         let count = 0;
         for (let date in bitcoinData.bpi) {
           sortedData.push({
