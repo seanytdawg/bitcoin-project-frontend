@@ -20,6 +20,16 @@
 
 }
 
+.house-container{
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+
+.house-card{
+  padding: 5%;
+    box-shadow: #242c3c;
+  /* display: inline-block; */
+}
 #button-converter{
   position: absolute;
   top: -130px;

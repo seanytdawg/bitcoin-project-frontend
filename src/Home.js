@@ -4,6 +4,7 @@ import {
   getBitCoinPrice,
   getBitCoinArticles,
   getAmazonProducts,
+  getHousingData,
   getBitcoinStockChartData,
 } from "./services/utils";
 import { day } from "./date.js";
@@ -16,6 +17,7 @@ import Item from './Item.js'
 import LineChart from "./LineChart";
 import InfoBox from './InfoBox'
 import ToolTip from './ToolTip'
+import House from './House'
 
 
 const dotenv = require("dotenv");
@@ -32,10 +34,13 @@ class Home extends Component {
     flippingCoin: true,
     articles: [],
     mobile: false,
+    bitcoinInUSD: null,
     amazonProducts: [],
     sortedData: [],
     fetchingData: true, 
-    priceNow: null
+    priceNow: null,
+    fullListOfHouses: [],
+    houses: []
   };
 
   handleChartHover(hoverLoc, activePoint) {
@@ -47,8 +52,7 @@ class Home extends Component {
 
   handleSelect = (e) => {
     this.setState({ currencyChosen: e.value });
-
-
+  this.getBitCoinPriceByCurrentCurrency()
   };
 
   handleSubmit = () => {
@@ -68,6 +72,7 @@ class Home extends Component {
         if (currency.currency === "BTC") {
           bitcoinInUSD = currency.rate;
           parseFloat(bitcoinInUSD);
+          this.setState({bitcoinInUSD})
         }
         if (currency.currency === this.state.currencyChosen) {
           this.setState({ currencySymbol: currency.symbol });
@@ -80,6 +85,15 @@ class Home extends Component {
     });
   }
   componentDidMount = () => {
+    getHousingData()
+    .then((housingData)=>{
+      this.setState({
+        startingHouseIndex: 0,
+        cutoffHouseIndex: 10,
+        fullListOfHouses: housingData.properties,
+        houses: housingData.properties,
+      });
+    })
     this.getBitCoinPriceByCurrentCurrency()
     let sortedData = [];
     getBitcoinStockChartData()
@@ -113,6 +127,14 @@ class Home extends Component {
     }
   };
 
+  showMoreHouses = ()=>{
+    this.setState({cutoffHouseIndex: this.state.cutoffHouseIndex + 10})
+  }
+
+
+  showLessHouses = ()=>{
+        this.setState({ cutoffHouseIndex: this.state.cutoffHouseIndex - 10 });
+  }
   render() {
 
     let articleList = this.state.articles.map((article, index) => {
@@ -136,12 +158,23 @@ class Home extends Component {
         ) : null}
         {this.state.flippingCoin ? (
           <div className="bitcoin-info">
-            <button id="button-converter" onClick={this.handleSubmit}>
-              Convert to Coin!
-            </button>
-            <p className="stock-price">{this.state.priceNow}</p>
-            <p className = "stock-price-symbol">{this.state.currencySymbol}</p>
-            <p>One bitcoin is worth {this.state.priceNow} {this.state.currencyChosen}s</p>
+            <p className="stock-price">
+              {this.state.currencySymbol}
+              {this.state.priceNow}
+              {" " + this.state.currencyChosen}
+            </p>
+            <p>
+              One bitcoin is worth {this.state.priceNow}{" "}
+              {this.state.currencyChosen}s
+            </p>
+            <a
+              className="nomics link"
+              href="https://nomics.com/"
+              target="_blank"
+            >
+              Crypto Market Cap and Pricing Data Provided By Nomics
+            </a>
+            <p className="stock-price-symbol">{this.state.currencySymbol}</p>
           </div>
         ) : (
           // <div className="coin">
@@ -185,12 +218,28 @@ class Home extends Component {
           </div>
         </div>
         <br></br>
-        {this.state.itemOfTheDay ? (
-          <Item
-            {...this.state.itemOfTheDay}
-            currentPrice={this.state.priceNow}
-          />
-        ) : null}
+          <div className = "house-container">
+            <h1> Made it big with Bitcoin? Invest in Real Estate! </h1>
+        {this.state.houses.slice(0,this.state.cutoffHouseIndex).map((house) => (
+          <House {...house} bitcoinPrice={this.state.bitcoinInUSD} city = {house.address.city} state = {house.address.state} />
+          ))}
+          {this.state.cutoffHouseIndex > 0 ?
+          <div>
+          <button onClick = {this.showMoreHouses}>Show More Houses</button>
+          <button onClick = {this.showLessHouses}>Show Less Houses</button>
+          </div>
+          :
+          this.state.cutoffHouseIndex  === 0 ?
+           <button onClick = {this.showMoreHouses}>Show Houses</button>
+          :
+          this.state.cutoffHouseIndex  === this.state.houses.length ? 
+            <button onClick = {this.showLessHouses}>Show Less Houses</button>
+          :
+          this.state.cutoffHouseIndex  === 10 ?
+          <button onClick = {this.showLessHouses}>Hide Houses</button>
+          :
+          null}
+            </div>
         <div className="article-container">
           <h2>Articles:</h2> {articleList}
         </div>

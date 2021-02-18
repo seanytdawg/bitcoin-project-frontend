@@ -13,9 +13,7 @@ export const getBitCoinPrice = () =>
 export const getBitCoinArticles = () =>
   fetch(
     `http://newsapi.org/v2/everything?q=bitcoin&from=${fullYear}-${month}-${day}sortBy=publishedAt&apiKey=${process.env.REACT_APP_ARTICLE_API_KEY}`,
-    {
-      headers: { "Access-Control-Allow-Origin": "*" },
-    }
+
   ).then((response) => {
     return response.json();
   });
@@ -25,6 +23,24 @@ export const getBitCoinArticles = () =>
    .then((response)=>{
        return response.json()
    })
+
+   export const getHousingData = () =>
+     fetch(
+       "https://realtor.p.rapidapi.com/properties/v2/list-for-sale?city=New%20York%20City&limit=200&offset=0&state_code=NY&sort=relevance",
+       {
+         method: "GET",
+         headers: {
+           "x-rapidapi-key": process.env.REACT_APP_HOUSING_API_KEY,
+           "x-rapidapi-host": "realtor.p.rapidapi.com",
+         },
+       }
+     )
+       .then((response) => {
+         return response.json();
+       })
+       .catch((err) => {
+         console.error(err);
+       });
 
   //  export const getAmazonProducts = ()=>{
 
