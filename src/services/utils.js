@@ -18,29 +18,72 @@ export const getBitCoinArticles = () =>
     return response.json();
   });
 
+  export const getBitCoinPrice2 = () =>
+    fetch(
+      "https://google-search3.p.rapidapi.com/api/v1/search/q=what+is+bitcoins+price+in+usd&num=20",
+      {
+        method: "GET",
+        headers: {
+          "x-rapidapi-key":
+            "313c14a523mshf1ab9612b84937ep1a3a81jsnc29c693f29d4",
+          "x-rapidapi-host": "google-search3.p.rapidapi.com",
+        },
+      }
+    )
+      .then((response) => {
+        return response.json();
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+
+      export const getBitCoinArticles2 = () =>
+        fetch(
+          "https://bing-news-search1.p.rapidapi.com/news/search?q=Bitcoin&freshness=Day&textFormat=Raw&safeSearch=Off",
+          {
+            method: "GET",
+            headers: {
+              "x-bingapis-sdk": "true",
+              "x-rapidapi-key":
+                "313c14a523mshf1ab9612b84937ep1a3a81jsnc29c693f29d4",
+              "x-rapidapi-host": "bing-news-search1.p.rapidapi.com",
+            },
+          }
+        )
+          .then((response) => {
+            return response.json()
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+      
+
+
  export const getBitcoinStockChartData = () =>
    fetch("https://api.coindesk.com/v1/bpi/historical/close.json")
    .then((response)=>{
        return response.json()
    })
 
-   export const getHousingData = () =>
-     fetch(
-       "https://realtor.p.rapidapi.com/properties/v2/list-for-sale?city=New%20York%20City&limit=200&offset=0&state_code=NY&sort=relevance",
-       {
-         method: "GET",
-         headers: {
-           "x-rapidapi-key": process.env.REACT_APP_HOUSING_API_KEY,
-           "x-rapidapi-host": "realtor.p.rapidapi.com",
-         },
-       }
-     )
-       .then((response) => {
-         return response.json();
-       })
-       .catch((err) => {
-         console.error(err);
-       });
+  //  export const getHousingData = () =>
+  //    fetch(
+  //      "https://realtor.p.rapidapi.com/properties/v2/list-for-sale?city=New%20York%20City&limit=200&offset=0&state_code=NY&sort=relevance",
+  //      {
+  //        method: "GET",
+  //        headers: {
+  //          "x-rapidapi-key": process.env.REACT_APP_HOUSING_API_KEY,
+  //          "x-rapidapi-host": "realtor.p.rapidapi.com",
+  //        },
+  //      }
+  //    )
+  //      .then((response) => {
+  //        return response.json();
+  //      })
+  //      .catch((err) => {
+  //        console.error(err);
+  //      });
+
+
 
   //  export const getAmazonProducts = ()=>{
 

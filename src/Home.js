@@ -4,8 +4,9 @@ import {
   getBitCoinPrice,
   getBitCoinArticles,
   getAmazonProducts,
-  getHousingData,
+  // getHousingData,
   getBitcoinStockChartData,
+  getBitCoinArticles2,
 } from "./services/utils";
 import { day } from "./date.js";
 import Select from "react-select";
@@ -85,15 +86,19 @@ class Home extends Component {
     });
   }
   componentDidMount = () => {
-    getHousingData()
-    .then((housingData)=>{
-      this.setState({
-        startingHouseIndex: 0,
-        cutoffHouseIndex: 10,
-        fullListOfHouses: housingData.properties,
-        houses: housingData.properties,
-      });
+    getBitCoinArticles2()
+    .then((articles)=>{
+      this.setState({articles: articles.value})
     })
+    // getHousingData()
+    // .then((housingData)=>{
+    //   this.setState({
+    //     startingHouseIndex: 0,
+    //     cutoffHouseIndex: 10,
+    //     fullListOfHouses: housingData.properties,
+    //     houses: housingData.properties,
+    //   });
+    // })
     this.getBitCoinPriceByCurrentCurrency()
     let sortedData = [];
     getBitcoinStockChartData()
@@ -138,8 +143,8 @@ class Home extends Component {
   render() {
 
     let articleList = this.state.articles.map((article, index) => {
-      return <ArticleCard key={index} {...article} />;
-    });
+      return <ArticleCard key={index} {...article} />
+    })
     return (
       <div className="home">
         <h1>What is Bitcoin's Price?</h1>
