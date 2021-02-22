@@ -1,6 +1,6 @@
 import {fullYear, day, month} from '../date.js'
 
-
+let bitcoinBACKEND = 'localhost3000/'
 
 export const getBitCoinPrice = () =>
   fetch(
@@ -64,6 +64,27 @@ export const getBitCoinArticles = () =>
    .then((response)=>{
        return response.json()
    })
+
+
+   export const postNewArticle = (article)=>{
+    fetch(`${bitcoinBACKEND}article`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: {
+        article,
+      },
+    }).then((response) => {
+      return response.json();
+    });
+   }
+  //  export const getArticles = ()=>{
+  //   fetch(`localhost3000/articles`).then((response) => {
+  //     return response.json();
+  //   });
+  //  }
 
   //  export const getHousingData = () =>
   //    fetch(

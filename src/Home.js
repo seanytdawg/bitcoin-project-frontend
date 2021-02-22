@@ -5,6 +5,8 @@ import {
   getBitCoinArticles,
   getAmazonProducts,
   // getHousingData,
+  getArticles,
+  postNewArticle,
   getBitcoinStockChartData,
   getBitCoinArticles2,
 } from "./services/utils";
@@ -24,6 +26,14 @@ import House from './House'
 const dotenv = require("dotenv");
 
 const env = dotenv.config().parsed
+
+const testArticle = {
+  title: "this",
+  content: "is",
+  img: "a",
+  source_url: "test",
+  author: "cool",
+};
 
 class Home extends Component {
   state = {
@@ -86,19 +96,14 @@ class Home extends Component {
     });
   }
   componentDidMount = () => {
+     postNewArticle(testArticle)
+    //  .then((article)=>{
+    //    console.log("created new ",article)
+    //  })
     getBitCoinArticles2()
     .then((articles)=>{
       this.setState({articles: articles.value})
     })
-    // getHousingData()
-    // .then((housingData)=>{
-    //   this.setState({
-    //     startingHouseIndex: 0,
-    //     cutoffHouseIndex: 10,
-    //     fullListOfHouses: housingData.properties,
-    //     houses: housingData.properties,
-    //   });
-    // })
     this.getBitCoinPriceByCurrentCurrency()
     let sortedData = [];
     getBitcoinStockChartData()
