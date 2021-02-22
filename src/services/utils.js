@@ -1,6 +1,6 @@
 import {fullYear, day, month} from '../date.js'
 
-let bitcoinBACKEND = 'localhost3000/'
+let bitcoinBACKEND = "http://localhost:3000/";
 
 export const getBitCoinPrice = () =>
   fetch(
@@ -11,52 +11,19 @@ export const getBitCoinPrice = () =>
        response.json())
 
 export const getBitCoinArticles = () =>
-  fetch(
-    `http://newsapi.org/v2/everything?q=bitcoin&from=${fullYear}-${month}-${day}sortBy=publishedAt&apiKey=${process.env.REACT_APP_ARTICLE_API_KEY}`,
-
-  ).then((response) => {
-    return response.json();
-  });
-
-  export const getBitCoinPrice2 = () =>
-    fetch(
-      "https://google-search3.p.rapidapi.com/api/v1/search/q=what+is+bitcoins+price+in+usd&num=20",
-      {
-        method: "GET",
-        headers: {
-          "x-rapidapi-key":
-            "313c14a523mshf1ab9612b84937ep1a3a81jsnc29c693f29d4",
-          "x-rapidapi-host": "google-search3.p.rapidapi.com",
-        },
-      }
-    )
-      .then((response) => {
-        return response.json();
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-
-      export const getBitCoinArticles2 = () =>
-        fetch(
-          "https://bing-news-search1.p.rapidapi.com/news/search?q=Bitcoin&freshness=Day&textFormat=Raw&safeSearch=Off",
-          {
-            method: "GET",
-            headers: {
-              "x-bingapis-sdk": "true",
-              "x-rapidapi-key":
-                "313c14a523mshf1ab9612b84937ep1a3a81jsnc29c693f29d4",
-              "x-rapidapi-host": "bing-news-search1.p.rapidapi.com",
-            },
-          }
-        )
-          .then((response) => {
-            return response.json()
-          })
-          .catch((err) => {
-            console.error(err);
-          });
-      
+  fetch("https://newscafapi.p.rapidapi.com/apirapid/news/world/?q=bitcoin", {
+    method: "GET",
+    headers: {
+      "x-rapidapi-key": `${process.env.REACT_APP_NEWS_CAF_API_KEY}`,
+      "x-rapidapi-host": "newscafapi.p.rapidapi.com",
+    },
+  })
+    .then((response) => {
+      return response.json()
+    })
+    .catch((err) => {
+      console.error(err);
+    });
 
 
  export const getBitcoinStockChartData = () =>
@@ -66,26 +33,34 @@ export const getBitCoinArticles = () =>
    })
 
 
-   export const postNewArticle = (article)=>{
+   export const postNewArticle = (article)=>
     fetch(`${bitcoinBACKEND}article`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Accept: "application/json",
+        "Accept": "application/json"
       },
-      body: {
-        article,
-      },
+      body: 
+        JSON.stringify(article),
     }).then((response) => {
       return response.json();
     });
-   }
-  //  export const getArticles = ()=>{
-  //   fetch(`localhost3000/articles`).then((response) => {
-  //     return response.json();
-  //   });
-  //  }
+   
+   export const getArticles = ()=>
+    fetch(`${bitcoinBACKEND}articles`).then((response) => {
+      return response.json();
+    });
+   
 
+    export const fetchArticlesAndPostToBackend = ()=>{
+        getBitCoinArticles()
+        .then((articles)=>{
+          console.log(articles)
+          articles.forEach((article)=>{
+            postNewArticle(article)
+          })
+        })
+    }
   //  export const getHousingData = () =>
   //    fetch(
   //      "https://realtor.p.rapidapi.com/properties/v2/list-for-sale?city=New%20York%20City&limit=200&offset=0&state_code=NY&sort=relevance",
