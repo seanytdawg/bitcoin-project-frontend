@@ -7,16 +7,15 @@ function ArticleCard(props) {
 
 
     useEffect(()=>{
-        console.log("article props", props.urlToImage);
+        console.log("article props", props);
 
         let image = document.createElement('img')
-        document.getElementsByClassName('article-card')[0].append(image)
+        document.getElementById('article-card').append(image)
 
         document.className = "article-img"
-        // image.src = props.urlToImage
     }, [])
     return (
-        <div className = "article-card" id = 'yo'>
+        <div className = "article-card" id = 'article-card'>
             <a href = {props.url} target = "_blank">
              <h2 className = "article-title">{props.name}</h2>
              <img src = {`${props.urlToImage}`}/>
