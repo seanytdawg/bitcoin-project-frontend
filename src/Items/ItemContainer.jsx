@@ -1,15 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {month, day, fullYear} from '../date.js'
-import { refreshArticles, getArticles } from '../services/utils.js';
-import ArticleCard from './ArticleCard'
+import { refreshArticles, getAmazonItems } from '../services/utils.js';
+import ItemCard from './ItemCard'
 const todaysDate = `${month}`
-class ArticleContainer extends React.Component {
+class ItemContainer extends React.Component {
 
     state = {
-        articles: []
+        items: []
     }
 
     componentDidMount = ()=>{
+       if(localStorage['item-fetch-date'] !== todaysDate){
+        localStorage.setItem("article-fetch-date", `${month}`);
+            console.log("fetching bro")
+            refreshArticles()
+        }
         if(this.state.articles.length === 0){
         getArticles()
         .then((articles)=>{
@@ -23,7 +28,7 @@ class ArticleContainer extends React.Component {
     return (
         <div>
             {this.state.articles.map((article)=>{
-              return <ArticleCard {...article} key = {article.id}/>
+              return <ItemCard {...article}/>
             }
             )}
         </div>
@@ -31,4 +36,4 @@ class ArticleContainer extends React.Component {
    }
 }
 
-export default ArticleContainer;
+export default ItemContainer;

@@ -7,18 +7,7 @@ function Item(props) {
     const [rendered, setRendered] = useState(false)
 
     const howManyItemsCanYouBuy = ()=>{
-        // getBitCoinPrice('us dollars')
-        // getAmazonProducts()
-        
-        // .then((priceData)=>{
-        //     let numBitCoin = parseFloat(priceData.priceValue)
-        //     let numPrice = parseFloat(props.price.split("$")[1]);
-        //     let numItems = Math.floor(numBitCoin / numPrice);
-        //    let itemText = document.createElement('p')
-        //     itemText.innerHTML = `You can buy ${numItems} of this item with 1 bitcoin!`
-        //     document.getElementsByClassName('item-card')[0].appendChild(itemText)
-        // //   `you can buy $(numItems}`
-        // })
+       
     }
 
     useEffect(()=>{

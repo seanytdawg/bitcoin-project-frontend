@@ -2,6 +2,8 @@ import {fullYear, day, month} from '../date.js'
 
 let bitcoinBACKEND = "http://localhost:3000/";
 
+let currentQuery = "tech"
+
 export const getBitCoinPrice = () =>
   fetch(
     `https://api.nomics.com/v1/exchange-rates?key=${process.env.REACT_APP_NOMICS_API_KEY}`, {
@@ -51,58 +53,93 @@ export const getBitCoinArticles = () =>
       return response.json();
     });
    
+   export const deleteAllArticles = ()=>{
+      fetch(`${bitcoinBACKEND}articles`, {
+        method: "DELETE",
+      })
+    }
 
-    export const fetchArticlesAndPostToBackend = ()=>{
+    export const refreshArticles = ()=>{
+        deleteAllArticles()
         getBitCoinArticles()
         .then((articles)=>{
-          console.log(articles)
+
           articles.forEach((article)=>{
             postNewArticle(article)
           })
         })
     }
-  //  export const getHousingData = () =>
-  //    fetch(
-  //      "https://realtor.p.rapidapi.com/properties/v2/list-for-sale?city=New%20York%20City&limit=200&offset=0&state_code=NY&sort=relevance",
-  //      {
-  //        method: "GET",
-  //        headers: {
-  //          "x-rapidapi-key": process.env.REACT_APP_HOUSING_API_KEY,
-  //          "x-rapidapi-host": "realtor.p.rapidapi.com",
-  //        },
-  //      }
-  //    )
-  //      .then((response) => {
-  //        return response.json();
-  //      })
-  //      .catch((err) => {
-  //        console.error(err);
-  //      });
+ 
+
+  export const postNewItem = (item) =>
+    fetch(`${bitcoinBACKEND}item`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify(item),
+    }).then((response) => {
+      return response.json();
+    });
 
 
+export const deleteAllItems = () => {
+      fetch(`${bitcoinBACKEND}items`, {
+        method: "DELETE",
+      });
+}
 
-  //  export const getAmazonProducts = ()=>{
+export const refreshItems = (query) => {
+  // deleteAllItems();
+  getAmazonItems(query)
 
-  //   fetch(
-  //     `https://amazon-price.p.rapidapi.com/azapi-azSearch` +
-  //       new URLSearchParams({
-  //         prime: "false",
-  //         query: "affiliate marketing",
-  //         page: "1",
-  //       }),
+};
 
-  //     {
-  //       method: "GET",
-  //       mode: "cors",
-  //       headers: {
-  //         // credentials: "include",
-  //         "Access-Control-Allow-Origin": "*",
-  //         "x-rapidapi-key": process.env["x-rapidapi-key"],
-  //         "x-rapidapi-host": "amazon-price.p.rapidapi.com",
-  //         useQueryString: true,
-  //       },
-  //     }
-  //   ).then((response) => {
-  //     console.log("amazon response", response);
-  //   });
-  //  }
+let amazonItemArray = [];
+let amazonItemsAsinString = ""
+
+   export const getAmazonItems = (query) =>
+     fetch(
+       `https://amazon-price.p.rapidapi.com/azapi-azSearch?prime=false&$query=${query}&page=1`,
+       {
+         method: "GET",
+         headers: {
+           "x-rapidapi-key":
+             process.env.REACT_APP_AMAZON_ITEMS_API_KEY,
+           "x-rapidapi-host": "amazon-price.p.rapidapi.com",
+         },
+       }
+     )
+       .then((response) => 
+          response.json())
+          .then((items)=>{
+            console.log("items: ",items)
+            items.body.results.forEach((item)=>{
+              amazonItemsAsinString += item["asin"] + ","
+              amazonItemArray.push(item)
+
+            })
+          })
+          .then(()=>{
+            fetch(
+              `https://amazon-price.p.rapidapi.com/azapi-bulkPrice?asins=${amazonItemsAsinString}`,
+              {
+                method: "GET",
+                headers: {
+                  "x-rapidapi-key": REACT_APP_AMAZON_ITEMS_API_KEY,
+                  "x-rapidapi-host": "amazon-price.p.rapidapi.com",
+                },
+              }
+            )
+              .then((response) => {
+                console.log("response: ", response);
+                return response.json();
+              })
+              .catch((err) => {
+                console.error(err);
+              });
+          })
+       .catch((err) => {
+         console.error(err);
+       });
