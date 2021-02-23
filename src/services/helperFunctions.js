@@ -14,7 +14,7 @@ else{
         if(length < 4){
             return numberString
         }
-    if(length > 3 && length < 6){
+    if(length > 3 && length < 7){
             return (
               wholeNums.substring(0, length - 3) +
               "," +

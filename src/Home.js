@@ -100,8 +100,11 @@ class Home extends Component {
       });
       let currentPrice = (bitcoinInUSD / currentCurrencyToUSD).toFixed(2);
       console.log("current price: ", currentPrice)
-      let currentPriceString = currentPrice.toString();
-      this.setState({ priceNow: currentPriceString});
+      let priceNow = currentPrice.toString();
+
+         priceNow = addCommas(priceNow)
+         console.log("price now: ", priceNow)
+      this.setState({ priceNow});
     });
   }
   componentDidMount = () => {
@@ -167,7 +170,7 @@ class Home extends Component {
           <div className="bitcoin-info">
             <p className="stock-price">
               {this.state.currencySymbol}
-              { this.state.priceNow ? addCommas(this.state.priceNow) : null}
+              { this.state.priceNow ? this.state.priceNow: null}
               {" " + this.state.currencyChosen}
             </p>
             <p>
