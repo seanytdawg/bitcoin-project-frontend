@@ -15,7 +15,6 @@ import LineChart from "./LineChart";
 import InfoBox from './InfoBox'
 import ToolTip from './ToolTip'
 import House from './House'
-import ArticleContainer from './Articles/ArticleContainer'
 import {addCommas} from './services/helperFunctions'
 
 
@@ -242,7 +241,6 @@ class Home extends Component {
           null}
             </div>
         <div className="article-container">
-          <ArticleContainer/>
         </div>
       </div>
     );
