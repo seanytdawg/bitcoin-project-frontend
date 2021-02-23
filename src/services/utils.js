@@ -127,7 +127,7 @@ let amazonItemsAsinString = ""
               {
                 method: "GET",
                 headers: {
-                  "x-rapidapi-key": REACT_APP_AMAZON_ITEMS_API_KEY,
+                  "x-rapidapi-key": process.env.REACT_APP_AMAZON_ITEMS_API_KEY,
                   "x-rapidapi-host": "amazon-price.p.rapidapi.com",
                 },
               }
