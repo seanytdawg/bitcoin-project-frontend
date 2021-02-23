@@ -5,12 +5,7 @@ import {
   getBitCoinArticles,
   // getHousingData,
   getArticles,
-  postNewArticle,
   getBitcoinStockChartData,
-  getBitCoinArticles2,
-  deleteAllArticles,
-  getAmazonItems,
-  refreshItems,
 } from "./services/utils";
 import { day, month, fullYear } from "./date.js";
 import Select from "react-select";
@@ -134,11 +129,11 @@ class Home extends Component {
     }
 
     getBitCoinPrice()
-    if (this.state.articles.length == 0) {
-      getArticles().then((articles) => {
-        this.setState({ articles: articles.articles });
-      });
-    }
+    // if (this.state.articles.length == 0) {
+    //   getArticles().then((articles) => {
+    //     this.setState({ articles: articles.articles });
+    //   });
+    // }
   };
 
   showMoreHouses = ()=>{
