@@ -1,6 +1,5 @@
 import {fullYear, day, month} from '../date.js'
 
-let bitcoinBACKEND = "http://localhost:3000/";
 
 let currentQuery = "tech"
 
@@ -48,16 +47,16 @@ export const getBitCoinArticles = () =>
       return response.json();
     });
    
-   export const getArticles = ()=>
-    fetch(`${bitcoinBACKEND}articles`).then((response) => {
-      return response.json();
-    });
+  //  export const getArticles = ()=>
+  //   fetch(`${bitcoinBACKEND}articles`).then((response) => {
+  //     return response.json();
+  //   });
    
-   export const deleteAllArticles = ()=>{
-      fetch(`${bitcoinBACKEND}articles`, {
-        method: "DELETE",
-      })
-    }
+  //  export const deleteAllArticles = ()=>{
+  //     fetch(`${bitcoinBACKEND}articles`, {
+  //       method: "DELETE",
+  //     })
+  //   }
 
     export const refreshArticles = ()=>{
         deleteAllArticles()
