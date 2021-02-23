@@ -3,27 +3,42 @@ import moment from 'moment'
 import {
   getBitCoinPrice,
   getBitCoinArticles,
-  getAmazonProducts,
   // getHousingData,
+  getArticles,
+  postNewArticle,
   getBitcoinStockChartData,
   getBitCoinArticles2,
+  deleteAllArticles,
+  getAmazonItems,
+  refreshItems,
 } from "./services/utils";
-import { day } from "./date.js";
+import { day, month, fullYear } from "./date.js";
 import Select from "react-select";
 import './App.css'
 import Currencies from './currencies'
 import Coin from './assets/bitcoin-coin.png'
-import ArticleCard  from './ArticleCard'
+import ArticleCard  from './Articles/ArticleCard'
 import Item from './Item.js'
 import LineChart from "./LineChart";
 import InfoBox from './InfoBox'
 import ToolTip from './ToolTip'
 import House from './House'
+import ArticleContainer from './Articles/ArticleContainer'
+
 
 
 const dotenv = require("dotenv");
 
-const env = dotenv.config().parsed
+const env = dotenv.config()
+
+const testArticle = 
+{
+  "title": "this",
+  "content": "is",
+  "img": "a",
+  "source_url": "test",
+  "author": "cool"
+}
 
 class Home extends Component {
   state = {
@@ -86,19 +101,7 @@ class Home extends Component {
     });
   }
   componentDidMount = () => {
-    getBitCoinArticles2()
-    .then((articles)=>{
-      this.setState({articles: articles.value})
-    })
-    // getHousingData()
-    // .then((housingData)=>{
-    //   this.setState({
-    //     startingHouseIndex: 0,
-    //     cutoffHouseIndex: 10,
-    //     fullListOfHouses: housingData.properties,
-    //     houses: housingData.properties,
-    //   });
-    // })
+      
     this.getBitCoinPriceByCurrentCurrency()
     let sortedData = [];
     getBitcoinStockChartData()
@@ -119,14 +122,13 @@ class Home extends Component {
         console.log(this.state.sortedData);
       });
 
-    // console.log("environment ", process.env.REACT_APP_ARTICLE_API_KEY);
     if (window.innerWidth <= 760) {
       this.setState({ mobile: true });
     }
 
     getBitCoinPrice()
     if (this.state.articles.length == 0) {
-      getBitCoinArticles().then((articles) => {
+      getArticles().then((articles) => {
         this.setState({ articles: articles.articles });
       });
     }
@@ -141,10 +143,6 @@ class Home extends Component {
         this.setState({ cutoffHouseIndex: this.state.cutoffHouseIndex - 10 });
   }
   render() {
-
-    let articleList = this.state.articles.map((article, index) => {
-      return <ArticleCard key={index} {...article} />
-    })
     return (
       <div className="home">
         <h1>What is Bitcoin's Price?</h1>
@@ -224,7 +222,6 @@ class Home extends Component {
         </div>
         <br></br>
           <div className = "house-container">
-            <h1> Made it big with Bitcoin? Invest in Real Estate! </h1>
         {this.state.houses.slice(0,this.state.cutoffHouseIndex).map((house) => (
           <House {...house} bitcoinPrice={this.state.bitcoinInUSD} city = {house.address.city} state = {house.address.state} />
           ))}
@@ -246,7 +243,7 @@ class Home extends Component {
           null}
             </div>
         <div className="article-container">
-          <h2>Articles:</h2> {articleList}
+          <ArticleContainer/>
         </div>
       </div>
     );
