@@ -2,9 +2,6 @@ import React, { Component } from 'react';
 import moment from 'moment'
 import {
   getBitCoinPrice,
-  getBitCoinArticles,
-  // getHousingData,
-  getArticles,
   getBitcoinStockChartData,
 } from "./services/utils";
 import { day, month, fullYear } from "./date.js";
