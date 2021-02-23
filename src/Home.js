@@ -24,7 +24,7 @@ import InfoBox from './InfoBox'
 import ToolTip from './ToolTip'
 import House from './House'
 import ArticleContainer from './Articles/ArticleContainer'
-
+import {addCommas} from './services/helperFunctions'
 
 
 const dotenv = require("dotenv");
@@ -82,6 +82,7 @@ class Home extends Component {
 
   getBitCoinPriceByCurrentCurrency = ()=>{
     getBitCoinPrice().then((currencies) => {
+      console.log("currencies: ",currencies)
       let bitcoinInUSD = null;
       let currentCurrencyToUSD = null;
       currencies.forEach((currency) => {
@@ -91,13 +92,16 @@ class Home extends Component {
           this.setState({bitcoinInUSD})
         }
         if (currency.currency === this.state.currencyChosen) {
+          console.log("currency", currency.rate)
           this.setState({ currencySymbol: currency.symbol });
           currentCurrencyToUSD = currency.rate;
           parseFloat(currentCurrencyToUSD);
         }
       });
       let currentPrice = (bitcoinInUSD / currentCurrencyToUSD).toFixed(2);
-      this.setState({ priceNow: currentPrice });
+      console.log("current price: ", currentPrice)
+      let currentPriceString = currentPrice.toString();
+      this.setState({ priceNow: currentPriceString});
     });
   }
   componentDidMount = () => {
@@ -163,7 +167,7 @@ class Home extends Component {
           <div className="bitcoin-info">
             <p className="stock-price">
               {this.state.currencySymbol}
-              {this.state.priceNow}
+              { this.state.priceNow ? addCommas(this.state.priceNow) : null}
               {" " + this.state.currencyChosen}
             </p>
             <p>
